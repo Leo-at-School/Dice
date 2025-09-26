@@ -1,5 +1,5 @@
-//const randomNumber = Math.random();
-//const diceSumFooter = document.getElementById("diceSum");
+var randomNumber = Math.random();
+var diceSumFooter = document.getElementById("diceSum");
 
-//diceSumFooter.innerText = randomNumber;
+diceSumFooter.innerText = randomNumber;
 console.log(Math.random());
