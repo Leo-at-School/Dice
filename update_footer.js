@@ -1,5 +1,5 @@
 function updateDiceSum(){
-  system.log("hello!!");
+  console.log("hello!!");
   //Reference to the footer where the dice sum is updated (Technically it references a <span> tag within the footer)
   var diceSumFooter = document.getElementById("diceSum");
   
@@ -9,7 +9,7 @@ function updateDiceSum(){
   //Calls the getDiceSum method inside the Java code that reutrns the dice sum
   var diceSum = canvasReference.getDiceSum();
   
-  system.log(diceSum);
+  console.log(diceSum);
   
   //Update the footer
   diceSumFooter.innerText = diceSum;
