@@ -1,3 +1,5 @@
+int diceSum;
+
 void setup(){
   noLoop();
   
@@ -9,8 +11,8 @@ void setup(){
 
 void draw(){
   int dieSize = 50;
-  int dieSum = 0;
   int roll;
+  diceSum = 0;
   
   //Iterate through the possible coordinates for differente dice
   for (int dieY = 0; dieY < height; dieY += dieSize){
@@ -18,12 +20,12 @@ void draw(){
       roll = (int)(Math.random()*6) + 1;
       DrawDie die = new DrawDie(dieX, dieY, dieSize, roll);
       
-      dieSum += roll;
+      diceSum += roll;
       die.drawDie();
     }
   }
   
-  surface.setTitle("Dice | Sum: " + dieSum);
+  surface.setTitle("Dice | Sum: " + diceSum);
 }
 
 
@@ -145,4 +147,8 @@ protected class DrawDie{
     //drawNumberVersion1();
     drawNumberVersion2();
   }
+}
+
+int getDiceSum(){
+  return diceSum;
 }
