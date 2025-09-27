@@ -149,6 +149,6 @@ protected class DrawDie{
   }
 }
 
-int getDiceSum(){
+public int getDiceSum(){
   return diceSum;
 }
