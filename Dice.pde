@@ -24,8 +24,6 @@ void draw(){
       die.drawDie();
     }
   }
-  
-  surface.setTitle("Dice | Sum: " + diceSum);
 }
 
 
