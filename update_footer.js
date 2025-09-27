@@ -1,19 +1,15 @@
 window.onload = function(){
   var processingInstance = Processing.getInstanceById("diceCanvas");
-
-  if (processingInstance){
-    var canvasReference = document.getElementById("diceCanvas");
-    
-    var testVariable = "HELLO!";
-    console.log(testVariable);
-    
-    //Related to updating the footer
-    var footerReference = document.getElementById("diceSum");
-    var diceSum = processingInstance.getDiceSum();
-    console.log(diceSum);
-  } else {
-    console.log("Something is wrong...");
-  }
+  
+  var canvasReference = document.getElementById("diceCanvas");
+  
+  var testVariable = "HELLO!";
+  console.log(testVariable);
+  
+  //Related to updating the footer
+  var footerReference = document.getElementById("diceSum");
+  var diceSum = processingInstance.getDiceSum();
+  console.log(diceSum);
 
 
 
