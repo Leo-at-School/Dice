@@ -1,17 +1,31 @@
-var canvasReference = document.getElementById("diceCanvas");
-var testGlobalVariable = "HELLO!";
-
-//Related to updating the footer
-var footerReference = document.getElementById("diceSum");
-var processingInstance = Processing.getInstanceById("diceCanvas");
-var diceSum = processingInstance.diceSum;
-
-//Update footer when the canvas is clicked
-canvasReference.addEventListener("click", function(){
-  console.log(testGlobalVariable);
+window.onload = function(){
+  var canvasReference = document.getElementById("diceCanvas");
   
-  processingInstance = Processing.getInstanceById("diceCanvas");
-  diceSum = processingInstance.diceSum;
+  var testVariable = "HELLO!";
+  console.log(testVariable);
   
-  footerReference.innerText = diceSum;
-});
+  //Related to updating the footer
+  var footerReference = document.getElementById("diceSum");
+  var processingInstance = Processing.getInstanceById("diceCanvas");
+
+  if (processingInstance){
+    var diceSum = processingInstance.getDiceSum();
+    console.log(diceSum);
+  } else {
+    console.log("Something is wrong...");
+  }
+
+
+
+
+  
+  //Update footer when the canvas is clicked
+  //canvasReference.addEventListener("click", function(){
+  //  console.log(testGlobalVariable);
+  //  
+  //  processingInstance = Processing.getInstanceById("diceCanvas");
+  //  diceSum = processingInstance.diceSum;
+  //  
+  //  footerReference.innerText = diceSum;
+  //});
+};
