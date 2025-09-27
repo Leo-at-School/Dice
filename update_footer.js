@@ -1,14 +1,14 @@
 window.onload = function(){
-  var canvasReference = document.getElementById("diceCanvas");
-  
-  var testVariable = "HELLO!";
-  console.log(testVariable);
-  
-  //Related to updating the footer
-  var footerReference = document.getElementById("diceSum");
   var processingInstance = Processing.getInstanceById("diceCanvas");
 
   if (processingInstance){
+    var canvasReference = document.getElementById("diceCanvas");
+    
+    var testVariable = "HELLO!";
+    console.log(testVariable);
+    
+    //Related to updating the footer
+    var footerReference = document.getElementById("diceSum");
     var diceSum = processingInstance.getDiceSum();
     console.log(diceSum);
   } else {
