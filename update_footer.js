@@ -1,5 +1,5 @@
 function updateDiceSum(){
-  console.log("hello!!");
+  console.log("hello again!!");
   //Reference to the footer where the dice sum is updated (Technically it references a <span> tag within the footer)
   var diceSumFooter = document.getElementById("diceSum");
   
