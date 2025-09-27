@@ -148,7 +148,3 @@ protected class DrawDie{
     drawNumberVersion2();
   }
 }
-
-public int getDiceSum(){
-  return diceSum;
-}
