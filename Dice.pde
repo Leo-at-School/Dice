@@ -1,4 +1,4 @@
-int diceSum;
+int diceSum = 0;
 
 void setup(){
   noLoop();
