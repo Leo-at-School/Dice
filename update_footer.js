@@ -4,5 +4,8 @@ var footerReference = document.getElementById("diceSum");
 canvasReference.addEventListener("click", function(){
   console.log("HEY!");
   
-  footerReference.innerText = Math.random();
+  const processingInstance = Processing.getInstanceById("diceCanvas");
+  const diceSum = processingInstance.diceSum;
+  
+  footerReference.innerText = diceSum;
 });
