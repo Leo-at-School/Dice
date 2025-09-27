@@ -7,7 +7,7 @@ function updateDiceSum(){
   var canvasReference = Processing.getInstanceById("Dice");
   
   //Calls the getDiceSum method inside the Java code that reutrns the dice sum
-  var diceSum = canvasReference.getDiceSum();
+  var diceSum = canvasReference.diceSum;
   
   console.log(diceSum);
   
