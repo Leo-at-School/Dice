@@ -1,27 +1,28 @@
-window.onload = function(){
-  var processingInstance = Processing.getInstanceById("diceCanvas");
+function pollForProcessingSketch(){ 
+	var processingInstance = Processing.getInstanceById("diceCanvas");
   
-  var canvasReference = document.getElementById("diceCanvas");
-  
-  var testVariable = "HELLO!";
-  console.log(testVariable);
-  
-  //Related to updating the footer
-  var footerReference = document.getElementById("diceSum");
-  var diceSum = processingInstance.getDiceSum();
-  console.log(diceSum);
+	console.log("Polling...");
+	
+	if (processingInstance){
+		var diceSum = processingInstance.getDiceSum();
+		updateDiceSum();
+	} else {
+		setTimeout(pollForProcessingSketch, 100);
+	}
+}
 
+function updateDiceSum(){
+	console.log("Dice sum updating...");
+	
+	var processingInstance = Processing.getInstanceById("diceCanvas");
+	var footerReference = document.getElementById("diceSum");
+	var diceSum = processingInstance.getDiceSum();
+	
+	console.log(diceSum);
+	footerReference.innerText = diceSum;
+}
 
+window.onload = pollForProcessingSketch();
 
-
-  
-  //Update footer when the canvas is clicked
-  //canvasReference.addEventListener("click", function(){
-  //  console.log(testGlobalVariable);
-  //  
-  //  processingInstance = Processing.getInstanceById("diceCanvas");
-  //  diceSum = processingInstance.diceSum;
-  //  
-  //  footerReference.innerText = diceSum;
-  //});
-};
+var canvasReference = document.getElementById("diceCanvas");
+canvasReference.addEventListener("click", updateDiceSum);
