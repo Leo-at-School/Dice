@@ -175,3 +175,11 @@ int getDiceSum(){
 int getDiceSize(){
   return diceSize;
 }
+
+int getCanvasWidth(){
+  return width;
+}
+
+int getCanvasHeight(){
+  return height;
+}
