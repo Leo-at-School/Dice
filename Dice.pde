@@ -1,4 +1,9 @@
-int diceSum = 0;
+int[] diceSizeArray = {1, 2, 4, 5, 8, 10, 25, 40, 50, 100, 200}; //Common facotrs of 800 and 1000
+int diceSizeCurrent = 8; //Index of dieSizeArray
+int diceSize;
+int diceSum;
+
+boolean keydownFlag = false; //Flag for to allow only 1 exxecution per key press
 
 void setup(){
   noLoop();
@@ -10,15 +15,15 @@ void setup(){
 
 
 void draw(){
-  int dieSize = 50;
+  diceSize = diceSizeArray[diceSizeCurrent];
   int roll;
   diceSum = 0;
   
   //Iterate through the possible coordinates for differente dice
-  for (int dieY = 0; dieY < height; dieY += dieSize){
-    for (int dieX = 0; dieX < width; dieX += dieSize){
+  for (int dieY = 0; dieY < height; dieY += diceSize){
+    for (int dieX = 0; dieX < width; dieX += diceSize){
       roll = (int)(Math.random()*6) + 1;
-      DrawDie die = new DrawDie(dieX, dieY, dieSize, roll);
+      DrawDie die = new DrawDie(dieX, dieY, diceSize, roll);
       
       diceSum += roll;
       die.drawDie();
@@ -30,6 +35,30 @@ void draw(){
 
 void mousePressed(){
    redraw();
+}
+
+void keyPressed(){
+  if ((key == CODED) && (keydownFlag == false)){ //Arrow keys are special and are considered CODED ad therefore need their own if statements
+    if (keyCode == UP){
+     diceSizeCurrent = min(diceSizeCurrent + 1, diceSizeArray.length - 1);
+     redraw();
+    } else if (keyCode == DOWN){
+     diceSizeCurrent = max(diceSizeCurrent - 1, 1);
+     redraw();
+    }
+  }
+  
+  keydownFlag = true;
+}
+
+
+//Prevents code in keyPressed from executing over and over while the key is held down
+void keyReleased(){
+  if (key == CODED){ //Arrow keys are special and are considered CODED ad therefore need their own if statements
+    if (keyCode == UP || keyCode == DOWN){
+      keydownFlag = false;
+    }
+  }
 }
 
 
@@ -61,16 +90,12 @@ protected class DrawDie{
     centerCoordinate = tempCenterCoordinate;
   }
   
-  
-  
   //Draw corners dots (1: top right, 2: bottom left, 3: top left, 4: bottom right)
   private void drawCorners(int numberOfCorners){
     for (int index = 0; index < numberOfCorners; index ++){
       ellipse(cornerCoordinates[index][0], cornerCoordinates[index][1], dotRadius, dotRadius);
     }
   }
-  
-  
   
   //Draw corners dots (1: left, 2: right)
   private void drawEdges(int numberOfEdges){
@@ -79,14 +104,10 @@ protected class DrawDie{
     }
   }
   
-  
-  
   //Draw center dot
   private void drawCenter(){
     ellipse(centerCoordinate[0], centerCoordinate[1], dotRadius, dotRadius);
   }
-  
-  
   
   //More readable
   private void drawNumberVersion1(){
@@ -122,7 +143,6 @@ protected class DrawDie{
     }
   }
   
-  
   //More concise
   private void drawNumberVersion2(){
     fill(0, 0, 0);
@@ -137,8 +157,6 @@ protected class DrawDie{
     drawEdges(number - 4);
   }
   
-  
-  
   protected void drawDie(){
     fill(255, 255, 255);
     rect(x, y, size, size);
@@ -147,6 +165,13 @@ protected class DrawDie{
   }
 }
 
+
+
+//For JavaScript to access the value of diceSum and diceSize
 int getDiceSum(){
   return diceSum;
+}
+
+int getDiceSize(){
+  return diceSize;
 }
