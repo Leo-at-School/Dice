@@ -2,24 +2,23 @@
 	<head>
 		<meta charset="utf-8">
 		<title>DICE!1!!11!!1!!11!!!11</title>
-		<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'> -->
 		<link rel="stylesheet" href="styles.css">
 		<script src="processing.js"></script>
 	</head>
 
 	<body>
 		<header>
-			<h1>What a marvelous sight!</h1>
+			<h1>What a marvelous sight! Click to change the dice and use the arrow keys while the canvas is selected to change how many dice there are :D</h1>
 		</header>
 		
 		<section id="content">
-			<canvas id="diceCanvas" data-processing-sources="Dice.pde" data-processing-js-onload="DiceReady"></canvas>
+			<canvas id="diceCanvas" data-processing-sources="Dice.pde"></canvas>
 		</section>
 		
 	    <footer>
 		    Total dice sum: <span id="diceSum"></span>
 	    </footer>
-		
+		<!--Create a footer that will show the total amount of dice on screen-->
 		<script src="update_footer.js"></script>
 	</body>
 </html>
