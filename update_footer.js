@@ -1,62 +1,106 @@
-//Poll until the processing sketch has fully loaded. Prevents JavaScript from accessing functions before the processing sketch has fully loaded
-function pollForProcessingSketch(){ 
-	var processingInstance = Processing.getInstanceById("diceCanvas");
+var previousProcessingInstanceData = [undefined, undefined];
+
+//Poll until the processing sketch has fully loaded. Prevents JavaScript from accessing instances of the processing sketch before the new sketch has fully loaded
+function pollForProcessingSketch(){
+	console.log("Polling..."); //For debugging
 	
-	console.log("Polling...");
+	let currentProcessingInstance = Processing.getInstanceById("diceCanvas"); //Get a new instance of 
 	
-	if (processingInstance){
-		//Update the sum once both the HTML and processing sketch have loaded
-		updateDiceSum();
-		updateDiceDisplayed();
+	//Verify the instance exists
+	if (currentProcessingInstance){
+		let currentProcessingInstanceData = [currentProcessingInstance.getDiceSum(), currentProcessingInstance.getDiceSize()];
+		let processingInstanceEquality = compareLists(previousProcessingInstanceData, currentProcessingInstanceData);
+		
+		//For debugging
+		console.log(" - Previous canvas data: " + previousProcessingInstanceData);
+		console.log(" - Current canvas data: " + currentProcessingInstanceData);
+		console.log(" - Canvas data equality (should be false): " + processingInstanceEquality);
+		
+		//Verify the instances aren't the same instance
+		if (!processingInstanceEquality){
+			updateDiceSum(currentProcessingInstance);
+			updateDiceDisplayed(currentProcessingInstance);
+			
+			//Disallows the now loaded sketch to be loaded again next function call
+			previousProcessingInstanceData = currentProcessingInstanceData;
+			
+			console.log("");
+			console.log("----------");
+		} else {
+			console.log(">Failed to load a new canvas instance, retrying...");
+			setTimeout(pollForProcessingSketch, 50); //Poll until a new processing sketch loads
+		}
 	} else {
-		//Call the function again after a failed attempt to retrieve the instance of the processing sketch
-		setTimeout(pollForProcessingSketch, 50);
+		console.log(">Canvas instance not found, retrying...");
+		setTimeout(pollForProcessingSketch, 50); //Poll until the processing sketch exists
+	}
+	
+	console.log("");
+}
+
+//Updates the span that displays the sum of all dice on the canvas
+function updateDiceSum(currentProcessingInstance){
+	let diceSumSpan = document.getElementById("diceSumSpan");
+	let diceSum = currentProcessingInstance.getDiceSum();
+	
+	//For debugging
+	console.log("Dice sum updating...");
+	console.log(" - Dice sum: " + diceSum);
+	
+	//Update the dice sum span
+	diceSumSpan.innerText = diceSum;
+}
+
+//Updates the span that displays the amount of dice displayed on the canvas
+function updateDiceDisplayed(currentProcessingInstance){
+	let diceDisplayedSpan = document.getElementById("diceDisplayedSpan");
+	let diceDieSizeSpan = document.getElementById("diceDieSizeSpan");
+	
+	//Dice and canvas data
+	let diceSize = currentProcessingInstance.getDiceSize();
+	let canvasWidth = currentProcessingInstance.getCanvasWidth();
+	let canvasHeight = currentProcessingInstance.getCanvasHeight();
+	let diceDisplayed = (canvasWidth/diceSize)*(canvasHeight/diceSize);
+	
+	//For debugging
+	console.log("Dice displayed updating...");
+	console.log(" - Canvas width: " + canvasWidth);
+	console.log(" - Canvas height: " + canvasHeight);
+	console.log(" - Dice size: " + diceSize);
+	console.log(" - Total amount of dice: " + diceDisplayed);
+	
+	//Update the dice sum and displayed spans
+	diceDieSizeSpan.innerText = diceSize;
+	diceDisplayedSpan.innerText = diceDisplayed;
+}
+
+//Verify only either the up or down arrow were pressed
+function verifyValidKeyPress(event){
+	if (event.key === "ArrowUp" || event.key === "ArrowDown"){
+		pollForProcessingSketch();
 	}
 }
 
-function updateDiceSum(){
-	console.log("Dice sum updating...");
+//Compare the equality of each element of ordered lists
+function compareLists(list1, list2){
+	if (list1.length != list2.length){
+		return false;
+	}
 	
-	var processingInstance = Processing.getInstanceById("diceCanvas");
-	var footerReference = document.getElementById("diceSum");
+	for (let i = 0; i < list1.length; i++){
+		if (list1[i] != list2[i]){
+			return false
+		}
+	}
 	
-	var diceSum = processingInstance.getDiceSum();
-	
-	//For debugging
-	console.log(diceSum);
-	
-	//Update the dice sum footer
-	footerReference.innerText = diceSum;
+	return true;
 }
 
-//Updates the amount of dice displayed on the canvas along with the new sum
-function updateDiceDisplayed(){
-	console.log("Dice displayed updating...");
-	
-	var processingInstance = Processing.getInstanceById("diceCanvas");
-	var footerReference = document.getElementById("diceDisplayed");
-	
-	var diceSize = processingInstance.getDiceSize();
-	var canvasWidth = processingInstance.getCanvasWidth();
-	var canvasHeight = processingInstance.getCanvasHeight();
-	
-	var diceDisplayed = (canvasWidth/diceSize)*(canvasHeight/diceSize);
-	
-	//For debugging
-	console.log(canvasWidth);
-	console.log(canvasHeight);
-	console.log(diceDisplayed);
-	
-	//Update the dice sum and displayed footers
-	footerReference.innerText = diceDisplayed;
-	updateDiceSum();
-}
+//Poll for processing sketch once all the HTML has loaded
+window.onload = pollForProcessingSketch;
 
-//Poll for processing sketch only once all the HTML has loaded
-window.onload = pollForProcessingSketch();
-
-//Listen for when the canvas has been clicked to then update the sum
 var canvasReference = document.getElementById("diceCanvas");
-canvasReference.addEventListener("click", updateDiceSum);
 
-//Make a listener that updates when the up/down arrow keys are pressed while the canvas is selected
+//Update the sum and total amount of dice when the canvas is clicked/when the a key is pressed
+canvasReference.addEventListener("click", pollForProcessingSketch);
+canvasReference.addEventListener("keydown", verifyValidKeyPress);
