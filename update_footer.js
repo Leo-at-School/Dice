@@ -1,4 +1,5 @@
 var previousProcessingInstanceData = [undefined, undefined];
+var keydownFlag = false;
 
 //Poll until the processing sketch has fully loaded. Prevents JavaScript from accessing instances of the processing sketch before the new sketch has fully loaded
 function pollForProcessingSketch(){
@@ -76,12 +77,15 @@ function updateDiceDisplayed(processingInstance){
 
 //Verify only either the up or down arrow were pressed
 function verifyValidKeyPress(event){
-	//Add functionality that only allows this function to run once per press
-	//aka dont allow multiple calls while a button is being held down
-	
-	if (event.key === "ArrowUp" || event.key === "ArrowDown"){
+	if ((event.key === "ArrowUp" || event.key === "ArrowDown") && !keydownFlag){ //keydownFlag allows only 1 call to te polling function per keydown
 		pollForProcessingSketch();
+		keydownFlag = true;
 	}
+}
+
+//Resets the keydownFlag when the key is released so that the pollForProcessingSketch function can be called again by the verifyValidKeyPress function on the next keydown event
+function resetKeydown(){
+	keydownFlag = false;
 }
 
 //Compare the equality of each element of ordered lists
@@ -92,7 +96,7 @@ function compareLists(list1, list2){
 	
 	for (let i = 0; i < list1.length; i++){
 		if (list1[i] != list2[i]){
-			return false
+			return false;
 		}
 	}
 	
@@ -107,3 +111,4 @@ var canvasReference = document.getElementById("diceCanvas");
 //Update the sum and total amount of dice when the canvas is clicked/when the a key is pressed
 canvasReference.addEventListener("click", pollForProcessingSketch);
 canvasReference.addEventListener("keydown", verifyValidKeyPress);
+canvasReference.addEventListener("keyup", resetKeydown)
