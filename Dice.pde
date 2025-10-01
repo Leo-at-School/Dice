@@ -12,8 +12,6 @@ void setup(){
   background(0, 0, 100);
 }
 
-
-
 void draw(){
   diceSize = diceSizeArray[diceSizeCurrent];
   int roll;
@@ -30,8 +28,6 @@ void draw(){
     }
   }
 }
-
-
 
 void mousePressed(){
    redraw();
@@ -51,7 +47,6 @@ void keyPressed(){
   keydownFlag = true;
 }
 
-
 //Prevents code in keyPressed from executing over and over while the key is held down
 void keyReleased(){
   if (key == CODED){ //Arrow keys are special and are considered CODED ad therefore need their own if statements
@@ -60,8 +55,6 @@ void keyReleased(){
     }
   }
 }
-
-
 
 protected class DrawDie{
   //Arrays of coordinates of each position a dot will lie relative to the die
@@ -164,8 +157,6 @@ protected class DrawDie{
     drawNumberVersion2();
   }
 }
-
-
 
 //For JavaScript to access the value of diceSum and diceSize
 int getDiceSum(){
