@@ -12,13 +12,34 @@
 		</header>
 		
 		<!--Make the instructions less convoluted-->
-		<h3>Click to reroll the dice and use the up/down arrow keys while the canvas is selected to raise/lower the amount dice there are :D</h3>
+		<p>
+			How to interact: Click to reroll, use up/down arrow keys to change how many dice there are<br>
+			<i>Note: You can only use the arrow keys while the canvas is selected</i>
+		</p>
 
 		<section id="content">
 			<canvas id="diceCanvas" data-processing-sources="Dice.pde"></canvas>
 		</section>
-		
-		<!-- Turn these footers into a table and make it look pretty!-->
+
+		<table>
+			<tbody>
+				<tr>
+					<td>Total dice sum</td>
+					<td><span id="diceSumSpan"></span></td>
+				</tr>
+				
+				<tr>
+					<td>Die size</td>
+					<td><span id="diceDieSizeSpan"></span></td>
+				</tr>
+				
+				<tr>
+					<td>Amount of dice</td>
+					<td><span id="diceDisplayedSpan"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- Turn these footers into a table and make it look pretty!
 	    <footer>
 		    Total dice sum: <span id="diceSumSpan"></span>
 	    </footer>
@@ -30,7 +51,7 @@
 		<footer>
 			Amount of dice: <span id="diceDisplayedSpan"></span>
 		</footer>
-		
+		-->
 		<script src="update_footer.js"></script>
 	</body>
 </html>
