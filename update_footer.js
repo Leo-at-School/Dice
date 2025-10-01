@@ -76,6 +76,9 @@ function updateDiceDisplayed(currentProcessingInstance){
 
 //Verify only either the up or down arrow were pressed
 function verifyValidKeyPress(event){
+	//Add functionality that only allows this function to run once per press
+	//aka dont allow multiple calls while a button is being held down
+	
 	if (event.key === "ArrowUp" || event.key === "ArrowDown"){
 		pollForProcessingSketch();
 	}
