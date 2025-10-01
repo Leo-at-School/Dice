@@ -38,7 +38,7 @@ void mousePressed(){
 }
 
 void keyPressed(){
-  if ((key == CODED) && (keydownFlag == false)){ //Arrow keys are special and are considered CODED ad therefore need their own if statements
+  if ((key == CODED) && (keydownFlag == false)){ //Arrow keys are special and are considered CODED and therefore need their own if statements
     if (keyCode == UP){
      diceSizeCurrent = min(diceSizeCurrent + 1, diceSizeArray.length - 1);
      redraw();
