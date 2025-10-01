@@ -39,27 +39,27 @@ function pollForProcessingSketch(){
 }
 
 //Updates the span that displays the sum of all dice on the canvas
-function updateDiceSum(currentProcessingInstance){
-	let diceSumSpan = document.getElementById("diceSumSpan");
-	let diceSum = currentProcessingInstance.getDiceSum();
+function updateDiceSum(processingInstance){
+	let diceSumTableCell = document.getElementById("diceSumTableCell");
+	let diceSum = processingInstance.getDiceSum();
 	
 	//For debugging
 	console.log("Dice sum updating...");
 	console.log(" - Dice sum: " + diceSum);
 	
 	//Update the dice sum span
-	diceSumSpan.innerText = diceSum;
+	diceSumTableCell.innerText = diceSum;
 }
 
 //Updates the span that displays the amount of dice displayed on the canvas
-function updateDiceDisplayed(currentProcessingInstance){
-	let diceDisplayedSpan = document.getElementById("diceDisplayedSpan");
-	let diceDieSizeSpan = document.getElementById("diceDieSizeSpan");
+function updateDiceDisplayed(processingInstance){
+	let diceSizeTableCell = document.getElementById("diceSizeTableCell");
+	let diceDisplayedTableCell = document.getElementById("diceDisplayedTableCell");
 	
 	//Dice and canvas data
-	let diceSize = currentProcessingInstance.getDiceSize();
-	let canvasWidth = currentProcessingInstance.getCanvasWidth();
-	let canvasHeight = currentProcessingInstance.getCanvasHeight();
+	let diceSize = processingInstance.getDiceSize();
+	let canvasWidth = processingInstance.getCanvasWidth();
+	let canvasHeight = processingInstance.getCanvasHeight();
 	let diceDisplayed = (canvasWidth/diceSize)*(canvasHeight/diceSize);
 	
 	//For debugging
@@ -70,8 +70,8 @@ function updateDiceDisplayed(currentProcessingInstance){
 	console.log(" - Total amount of dice: " + diceDisplayed);
 	
 	//Update the dice sum and displayed spans
-	diceDieSizeSpan.innerText = diceSize;
-	diceDisplayedSpan.innerText = diceDisplayed;
+	diceSizeTableCell.innerText = diceSize;
+	diceDisplayedTableCell.innerText = diceDisplayed;
 }
 
 //Verify only either the up or down arrow were pressed
