@@ -55,7 +55,7 @@ function pollForProcessingSketch(event = null, calledFromTimeout = false){ //eve
 		setTimeout(pollForProcessingSketch, timeoutWait, null, true); //Poll until the processing sketch exists, passing true to prevent the console being cleared from a setTimeout call
 	}
 	
-	console.log("");
+	console.log(" ");
 }
 
 //Updates the span that displays the sum of all dice on the canvas
