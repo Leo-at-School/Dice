@@ -125,9 +125,8 @@ function compareLists(list1, list2){
 //Poll for processing sketch once all the HTML has loaded
 window.onload = pollForProcessingSketch;
 
-var canvasReference = document.getElementById("diceCanvas");
-
 //Update the sum and total amount of dice when the canvas is clicked/when the a key is pressed
+var canvasReference = document.getElementById("diceCanvas");
 canvasReference.addEventListener("click", pollForProcessingSketch);
 canvasReference.addEventListener("keydown", verifyValidKeyPress);
 canvasReference.addEventListener("keyup", resetKeydown);
