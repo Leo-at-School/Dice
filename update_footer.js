@@ -111,4 +111,4 @@ var canvasReference = document.getElementById("diceCanvas");
 //Update the sum and total amount of dice when the canvas is clicked/when the a key is pressed
 canvasReference.addEventListener("click", pollForProcessingSketch);
 canvasReference.addEventListener("keydown", verifyValidKeyPress);
-canvasReference.addEventListener("keyup", resetKeydown)
+canvasReference.addEventListener("keyup", resetKeydown);
