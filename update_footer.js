@@ -1,11 +1,30 @@
 var previousProcessingInstanceData = [undefined, undefined];
+
+var timeoutWait = 50; //In milliseconds
+
+var failedToFindNewProcessingSketchCount;
+var maxFailedToFindNewProcessingSketchCount = 10;
+
 var keydownFlag = false;
 
 //Poll until the processing sketch has fully loaded. Prevents JavaScript from accessing instances of the processing sketch before the new sketch has fully loaded
-function pollForProcessingSketch(){
+function pollForProcessingSketch(event = null, calledFromTimeout = false){ //event variable isnt used, it fills a spot for the keydown event listner so the calledFromTimeout isnt interfered with
+	//Specific code for when the function is not called from the setTimeout methods inside this function (aka the first call of the function)
+	if (!calledFromTimeout){
+		console.clear();
+		failedToFindNewProcessingSketchCount = 0;
+	}
+	
+	//Prevents too many function calls that dont do anything
+	if (failedToFindNewProcessingSketchCount >= maxFailedToFindNewProcessingSketchCount){
+		console.log(">Failed to load a new canvas instance");
+		console.log("Ceasing function calls...")
+		return;
+	}
+	
 	console.log("Polling..."); //For debugging
 	
-	let currentProcessingInstance = Processing.getInstanceById("diceCanvas"); //Get a new instance of 
+	let currentProcessingInstance = Processing.getInstanceById("diceCanvas");
 	
 	//Verify the instance exists
 	if (currentProcessingInstance){
@@ -24,16 +43,16 @@ function pollForProcessingSketch(){
 			
 			//Disallows the now loaded sketch to be loaded again next function call
 			previousProcessingInstanceData = currentProcessingInstanceData;
-			
-			console.log("");
-			console.log("----------");
 		} else {
-			console.log(">Failed to load a new canvas instance, retrying...");
-			setTimeout(pollForProcessingSketch, 50); //Poll until a new processing sketch loads
+			console.log(">Failed to load a new canvas instance");
+			console.log("Retrying...");
+			failedToFindNewProcessingSketchCount++;
+			setTimeout(pollForProcessingSketch, timeoutWait, null, true); //Poll until a new processing sketch loads, passing true to prevent the console being cleared from a setTimeout call
 		}
 	} else {
-		console.log(">Canvas instance not found, retrying...");
-		setTimeout(pollForProcessingSketch, 50); //Poll until the processing sketch exists
+		console.log(">Failed to load a new canvas instance");
+		console.log("Retrying...");
+		setTimeout(pollForProcessingSketch, timeoutWait, null, true); //Poll until the processing sketch exists, passing true to prevent the console being cleared from a setTimeout call
 	}
 	
 	console.log("");
