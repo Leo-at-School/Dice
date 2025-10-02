@@ -3,7 +3,7 @@ int diceSizeCurrent = 8; //Index of dieSizeArray
 int diceSize;
 int diceSum;
 
-boolean keydownFlag = false; //Flag for to allow only 1 exxecution per key press
+boolean keydownFlag = false; //Flag to allow only 1 exxecution per key press
 
 void setup(){
   noLoop();
@@ -34,7 +34,7 @@ void mousePressed(){
 }
 
 void keyPressed(){
-  if ((key == CODED) && (keydownFlag == false)){ //Arrow keys are special and are considered CODED and therefore need their own if statements
+  if ((key == CODED) && !keydownFlag){ //Arrow keys are special and are considered CODED and therefore need their own if statements
     if (keyCode == UP){
      diceSizeCurrent = min(diceSizeCurrent + 1, diceSizeArray.length - 1);
      redraw();
