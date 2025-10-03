@@ -9,53 +9,45 @@ var keydownFlag = false;
 
 //Poll until the processing sketch has fully loaded. Prevents JavaScript from accessing instances of the processing sketch before the new sketch has fully loaded
 function pollForProcessingSketch(event = null, calledFromTimeout = false){ //event variable isnt used, it fills a spot for the keydown event listner so the calledFromTimeout isnt interfered with
+	let currentProcessingInstance = Processing.getInstanceById("diceCanvas");
+	console.log("Polling..."); //For debugging
+	
 	//Specific code for when the function is not called from the setTimeout methods inside this function (aka the first call of the function)
 	if (!calledFromTimeout){
 		console.clear();
 		failedToFindNewProcessingSketchCount = 0;
 	}
 	
-	//Prevents too many function calls that dont do anything
-	if (failedToFindNewProcessingSketchCount >= maxFailedToFindNewProcessingSketchCount){
-		console.log(">Failed to load a new canvas instance");
-		console.log("Ceasing function calls...")
+	if (failedToFindNewProcessingSketchCount >= maxFailedToFindNewProcessingSketchCount){ //Prevents too many function calls that dont do anything
+		console.log(">Failed to load a new canvas instance\nCeasing function calls...\n ");
+		return;
+	} else if (!currentProcessingInstance){ //Verify the instance exists
+		console.log(">Failed to load a new canvas instance\nRetrying...\n ");
+		setTimeout(pollForProcessingSketch, timeoutWait, null, true); //Poll until the processing sketch exists, passing true to prevent the console being cleared from a setTimeout call
+	    return;
+	}
+	
+	let currentProcessingInstanceData = [currentProcessingInstance.getDiceSum(), currentProcessingInstance.getDiceSize()];
+	let processingInstanceEquality = compareLists(previousProcessingInstanceData, currentProcessingInstanceData);
+	
+	//For debugging
+	console.log(" - Previous canvas data: " + previousProcessingInstanceData);
+	console.log(" - Current canvas data: " + currentProcessingInstanceData);
+	console.log(" - Canvas data equality (should be false): " + processingInstanceEquality);
+	
+	//Verify the instances aren't the same instance
+	if (processingInstanceEquality){
+		console.log(">Failed to load a new canvas instance\nRetrying...\n ");
+		failedToFindNewProcessingSketchCount++;
+		setTimeout(pollForProcessingSketch, timeoutWait, null, true); //Poll until a new processing sketch loads, passing true to prevent the console being cleared from a setTimeout call
 		return;
 	}
 	
-	console.log("Polling..."); //For debugging
+	updateDiceSum(currentProcessingInstance);
+	updateDiceDisplayed(currentProcessingInstance);
 	
-	let currentProcessingInstance = Processing.getInstanceById("diceCanvas");
-	
-	//Verify the instance exists
-	if (currentProcessingInstance){
-		let currentProcessingInstanceData = [currentProcessingInstance.getDiceSum(), currentProcessingInstance.getDiceSize()];
-		let processingInstanceEquality = compareLists(previousProcessingInstanceData, currentProcessingInstanceData);
-		
-		//For debugging
-		console.log(" - Previous canvas data: " + previousProcessingInstanceData);
-		console.log(" - Current canvas data: " + currentProcessingInstanceData);
-		console.log(" - Canvas data equality (should be false): " + processingInstanceEquality);
-		
-		//Verify the instances aren't the same instance
-		if (!processingInstanceEquality){
-			updateDiceSum(currentProcessingInstance);
-			updateDiceDisplayed(currentProcessingInstance);
-			
-			//Disallows the now loaded sketch to be loaded again next function call
-			previousProcessingInstanceData = currentProcessingInstanceData;
-		} else {
-			console.log(">Failed to load a new canvas instance");
-			console.log("Retrying...");
-			failedToFindNewProcessingSketchCount++;
-			setTimeout(pollForProcessingSketch, timeoutWait, null, true); //Poll until a new processing sketch loads, passing true to prevent the console being cleared from a setTimeout call
-		}
-	} else {
-		console.log(">Failed to load a new canvas instance");
-		console.log("Retrying...");
-		setTimeout(pollForProcessingSketch, timeoutWait, null, true); //Poll until the processing sketch exists, passing true to prevent the console being cleared from a setTimeout call
-	}
-	
-	console.log("");
+	//Disallows the now loaded sketch to be loaded again next function call
+	previousProcessingInstanceData = currentProcessingInstanceData;
 }
 
 //Updates the span that displays the sum of all dice on the canvas
